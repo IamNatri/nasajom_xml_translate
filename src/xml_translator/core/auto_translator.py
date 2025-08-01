@@ -124,21 +124,6 @@ class AutoTranslator:
         # 3. Manter original se nada funcionar
         return text, "original"
     
-    def add_override(self, original_text: str, translation: str):
-        """
-        Adiciona override manual permanente baseado no texto original
-        
-        Args:
-            original_text: Texto original em inglês
-            translation: Tradução manual
-        """
-        try:
-            text_clean = original_text.strip()
-            self.overrides[text_clean] = translation
-            self.save_overrides()
-            self.logger.info(f"Override salvo: '{text_clean}' → '{translation}'")
-        except Exception as e:
-            self.logger.error(f"Erro ao adicionar override: {e}")
     
     def get_stats(self) -> dict:
         """

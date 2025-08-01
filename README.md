@@ -1,42 +1,41 @@
 # XML Translator - Estrutura Profissional
 
-Tradutor automatizado de arquivos XML de localização do inglês para português (pt-BR) utilizando Google Translate com sistema de overrides manuais.
+Tradutor automatizado de arquivos XML de localização do inglês para português (pt-BR) com **overrides baseados em texto** e **arquitetura modular**.
 
 ## Estrutura do Projeto
 
 ```
-xml_translator/
-├── src/                           # Código fonte
-│   └── xml_translator/            # Pacote principal
-│       ├── __init__.py            # Inicialização do pacote
-│       ├── core/                  # Módulos centrais
-│       │   ├── __init__.py
-│       │   ├── auto_translator.py # Tradutor automático Google
-│       │   └── translator.py      # Processador XML principal
-│       └── utils/                 # Utilitários
-│           ├── __init__.py
-│           └── logger.py          # Sistema de logging
-├── tests/                         # Testes automatizados
-│   ├── __init__.py
-│   └── test_translator.py         # Testes principais
-├── examples/                      # Arquivos de exemplo
-│   └── sample_en.xml              # XML exemplo
-├── config/                        # Configurações
-│   ├── overrides.json             # Traduções manuais
-│   └── overrides.example.json     # Exemplo de overrides
-├── logs/                          # Logs da aplicação
-├── main.py                        # Ponto de entrada
-├── pyproject.toml                 # Configuração Poetry
-└── README.md                      # Esta documentação
+xml-translator/
+├── src/
+│   └── xml_translator/
+│       ├── core/                 # Módulos principais
+│       │   ├── auto_translator.py    # Google Translate + Overrides
+│       │   └── translator.py         # Processamento XML
+│       └── utils/                # Utilitários
+│           └── logger.py             # Sistema de logging
+├── config/                       # Configurações
+│   ├── overrides.json               # Overrides ativos
+│   └── overrides.example.json       # Exemplo de overrides
+├── examples/                     # Arquivos de exemplo
+├── logs/                        # Logs do sistema
+├── tests/                       # Testes automatizados
+├── docs/                        # Documentação
+│   └── OVERRIDES.md                # Guia de overrides
+├── main.py                      # Script principal
+└── pyproject.toml              # Configuração Poetry
 ```
 
-## Instalação
+## Características
 
-### Pré-requisitos
-- Python 3.8+
-- Poetry (recomendado)
+- **Overrides baseados em texto** - Substitui palavras/frases específicas no XML  
+- **Reutilização inteligente** - Uma entrada override resolve múltiplas chaves XML  
+- **Tradução automática** - Google Translate para texto não mapeado  
+- **Sistema de prioridades** - Override → Google → Original  
+- **Arquitetura modular** - Separação clara de responsabilidades  
+- **Logging estruturado** - Logs detalhados em arquivos diários  
 
-### Com Poetry (recomendado)
+## Instalação e Uso
+
 ```bash
 # Instalar dependências
 poetry install
@@ -45,46 +44,109 @@ poetry install
 poetry run xml-translator
 ```
 
-## Uso
+## Sistema de Overrides - NOVIDADE
 
-### Uso Básico
+### Como Funciona
+O sistema substitui **texto específico** encontrado no XML, independente da chave onde aparece.
+
+#### Formato Correto (Baseado no Texto)
+```json
+{
+  "Login": "Entrar",
+  "Dashboard": "Painel de Controle",
+  "Settings": "Definições",
+  "Password": "Palavra-passe"
+}
+```
+
+#### Formato Antigo (Não usar)
+```json
+{
+  "GS_LogOn_Title": "Entrar no Sistema",
+  "GS_Dashboard_Title": "Painel"
+}
+```
+
+### Vantagens do Sistema Baseado em Texto
+
+1. **Reutilização Máxima**
+   - "Settings" pode aparecer em `GS_Menu_Settings`, `GS_Dashboard_Settings`, etc.
+   - **Uma única entrada** no override resolve **todas as ocorrências**
+
+2. **Simplicidade Total**
+   - Não precisa conhecer chaves XML internas
+   - Basta ver o texto em inglês no arquivo original
+
+3. **Consistência Garantida**
+   - Mesmo termo sempre traduzido igual
+   - Evita inconsistências entre diferentes partes do sistema
+## Sistema de Prioridades
+
+1. **Override manual** (`config/overrides.json`) - **PRIORIDADE MÁXIMA**
+2. **Google Translate** - tradução automática
+3. **Texto original** - mantido se falhar tudo
+
+### Exemplo Prático
+
+**XML Original:**
+```xml
+<string key="GS_Menu_Settings">Settings</string>
+<string key="GS_Dashboard_Settings">Settings</string>
+<string key="GS_User_Settings">Settings</string>
+```
+
+**Override:**
+```json
+{
+  "Settings": "Definições"
+}
+```
+
+**Resultado:** Todas as 3 chaves ficam com "Definições"
+
+## Como Adicionar Overrides
+
+1. **Identifique o texto** no XML original (ex: "Dashboard")
+2. **Adicione no arquivo** `config/overrides.json`:
+   ```json
+   {
+     "Dashboard": "Painel de Controle"
+   }
+   ```
+3. **Execute novamente** o tradutor
+
+**Documentação completa**: [`docs/OVERRIDES.md`](docs/OVERRIDES.md)
+
+## Uso Básico
+
 ```bash
 poetry run xml-translator
 ```
 
-O sistema irá:
-1. Detectar arquivos XML no diretório atual
-2. Permitir escolha do arquivo
-3. Processar traduções automaticamente
-4. Gerar arquivo `*_pt-BR.xml`
+**Fluxo automático:**
+1. Detecta arquivos XML no diretório
+2. Permite escolha do arquivo 
+3. Processa traduções (Override → Google → Original)
+4. Gera arquivo `*_pt-BR.xml`
 
 ### Estrutura XML Suportada
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <localization culture="en-US">
   <group name="Common">
-    <string key="Title">Title</string>
+    <string key="Title">Dashboard</string>
     <string key="Cancel">Cancel</string>
   </group>
 </localization>
 ```
 
-## Configuração
+## Configurações
 
-### Overrides Manuais
-Arquivo: `config/overrides.json`
-```json
-{
-  "GS_LogOn_Title": "Entrar no Sistema BI",
-  "GS_Dashboard_Title": "Painel de Controle",
-  "GS_Button_Cancel": "Cancelar"
-}
-```
-
-### Logs
-- Logs salvos em: `logs/xml_translator_YYYYMMDD.log`
-- Níveis: INFO, WARNING, ERROR
-- Console + arquivo simultaneamente
+| Arquivo | Função |
+|---------|--------|
+| `config/overrides.json` | Mapeamento texto → tradução |
+| `config/overrides.example.json` | Exemplo de configuração |
+| `logs/xml_translator_YYYYMMDD.log` | Logs diários detalhados |
 
 ## Desenvolvimento
 
@@ -93,89 +155,30 @@ Arquivo: `config/overrides.json`
 poetry run pytest tests/
 ```
 
-### Formatação de Código
+### Adicionar Dependências
 ```bash
-# Black (formatador)
-poetry run black src/ tests/
-
-# isort (organizar imports)
-poetry run isort src/ tests/
-
-# Linting
-poetry run flake8 src/ tests/
-```
-
-### Estrutura de Desenvolvimento
-```bash
-# Instalar dependências de desenvolvimento
-poetry install --with dev
-
-# Adicionar nova dependência
+# Dependência de produção
 poetry add nova-biblioteca
 
-# Adicionar dependência de desenvolvimento
+# Dependência de desenvolvimento
 poetry add --group dev pytest-mock
 ```
 
 ## Funcionalidades
 
 ### Implementadas
-- Tradução automática via Google Translate
-- Logging estruturado
-- Estrutura de projeto profissional
-- Gerenciamento com Poetry
-- Testes 
-- Detecção automática de arquivos
-
-## Arquitetura
-
-### Módulos Principais
-
-#### `core/auto_translator.py`
-- Integração com Google Translate
-- Gerenciamento de overrides
-- Rate limiting
-- Cache de traduções
-
-#### `core/translator.py`
-- Processamento de arquivos XML
-- Extração de strings
-- Aplicação de traduções
-- Geração de relatórios
-
-#### `utils/logger.py`
-- Configuração centralizada de logs
-- Rotação automática
-- Múltiplos handlers
+- **Overrides baseados em texto** - Sistema inteligente de substituição
+- **Tradução automática** - Google Translate integrado
+- **Logging estruturado** - Logs detalhados em arquivos diários
+- **Arquitetura modular** - Código organizado e manutenível
 
 ### Fluxo de Processamento
-1. **Inicialização** → Configurar logging + tradutor
-2. **Detecção** → Buscar arquivos XML disponíveis
+1. **Inicialização** → Setup logging + tradutor
+2. **Detecção** → Buscar arquivos XML disponíveis  
 3. **Carregamento** → Parser XML com validação
 4. **Extração** → Identificar strings traduzíveis
-5. **Tradução** → Overrides → Google → Original
+5. **Tradução** → **Override** → **Google** → **Original**
 6. **Aplicação** → Atualizar XML com traduções
-7. **Salvamento** → Gerar arquivo pt-BR
+7. **Salvamento** → Gerar arquivo pt-BR  
 8. **Relatório** → Estatísticas e logs
 
-## 🔧 Troubleshooting
-
-### Problemas Comuns
-
-**Erro: "googletrans não instalado"**
-```bash
-poetry install
-```
-
-**Erro: "Arquivo não encontrado"**
-- Verificar se arquivo XML existe
-- Usar caminho absoluto se necessário
-
-**Traduções inconsistentes**
-- Adicionar overrides em `config/overrides.json`
-- Verificar conectividade com Google
-
-### Logs e Debug
-- Verificar `logs/xml_translator_YYYYMMDD.log`
-- Usar nível DEBUG para mais detalhes
-- Conferir estatísticas no final da execução
