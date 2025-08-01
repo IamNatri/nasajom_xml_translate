@@ -47,53 +47,7 @@ poetry run xml-translator
 ## Sistema de Overrides - NOVIDADE
 
 ### Como Funciona
-O sistema substitui **texto específico** encontrado no XML, independente da chave onde aparece.
-
-#### Formato Correto (Baseado no Texto)
-```json
-{
-  "Login": "Entrar",
-  "Dashboard": "Painel de Controle",
-  "Settings": "Definições",
-  "Password": "Palavra-passe"
-}
-```
-
-#### Formato Antigo (Não usar)
-```json
-{
-  "GS_LogOn_Title": "Entrar no Sistema",
-  "GS_Dashboard_Title": "Painel"
-}
-```
-
-### Vantagens do Sistema Baseado em Texto
-
-1. **Reutilização Máxima**
-   - "Settings" pode aparecer em `GS_Menu_Settings`, `GS_Dashboard_Settings`, etc.
-   - **Uma única entrada** no override resolve **todas as ocorrências**
-
-2. **Simplicidade Total**
-   - Não precisa conhecer chaves XML internas
-   - Basta ver o texto em inglês no arquivo original
-
-3. **Consistência Garantida**
-   - Mesmo termo sempre traduzido igual
-   - Evita inconsistências entre diferentes partes do sistema
-## Sistema de Prioridades
-
-1. **Override manual** (`config/overrides.json`) - **PRIORIDADE MÁXIMA**
-2. **Google Translate** - tradução automática
-3. **Texto original** - mantido se falhar tudo
-
-### Exemplo Prático
-
-**XML Original:**
-```xml
-<string key="GS_Menu_Settings">Settings</string>
-<string key="GS_Dashboard_Settings">Settings</string>
-<string key="GS_User_Settings">Settings</string>
-```
+O sistema substitui **texto específico** encontrado no XML, independente da chave onde aparece.y
 
 **Override:**
 ```json
@@ -140,28 +94,11 @@ poetry run xml-translator
 </localization>
 ```
 
-## Configurações
-
-| Arquivo | Função |
-|---------|--------|
-| `config/overrides.json` | Mapeamento texto → tradução |
-| `config/overrides.example.json` | Exemplo de configuração |
-| `logs/xml_translator_YYYYMMDD.log` | Logs diários detalhados |
-
 ## Desenvolvimento
 
 ### Executar Testes
 ```bash
 poetry run pytest tests/
-```
-
-### Adicionar Dependências
-```bash
-# Dependência de produção
-poetry add nova-biblioteca
-
-# Dependência de desenvolvimento
-poetry add --group dev pytest-mock
 ```
 
 ## Funcionalidades
