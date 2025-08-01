@@ -1,6 +1,6 @@
 # XML Translator
 
-Tradutor automatizado de arquivos XML de localização do inglês para português (pt-BR) com **overrides baseados em texto** e **arquitetura modular**.
+Tradutor automatizado de arquivos XML de localização do inglês para português (pt-BR).
 
 ## Estrutura do Projeto
 
