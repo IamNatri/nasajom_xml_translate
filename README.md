@@ -1,4 +1,4 @@
-# XML Translator - Estrutura Profissional
+# XML Translator
 
 Tradutor automatizado de arquivos XML de localização do inglês para português (pt-BR) com **overrides baseados em texto** e **arquitetura modular**.
 
@@ -19,8 +19,6 @@ xml-translator/
 ├── examples/                     # Arquivos de exemplo
 ├── logs/                        # Logs do sistema
 ├── tests/                       # Testes automatizados
-├── docs/                        # Documentação
-│   └── OVERRIDES.md                # Guia de overrides
 ├── main.py                      # Script principal
 └── pyproject.toml              # Configuração Poetry
 ```
