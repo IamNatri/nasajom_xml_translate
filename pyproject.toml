@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "xml-translator"
+version = "1.0.0"
+description = "Tradutor profissional de arquivos XML de localização com Google Translate e overrides manuais"
+authors = ["Nasajon Systems <dev@nasajon.com.br>"]
+readme = "README.md"
+packages = [{include = "xml_translator", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+googletrans = "4.0.0rc1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+black = "^23.0"
+isort = "^5.0"
+flake8 = "^6.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+xml-translator = "main:main"
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 100

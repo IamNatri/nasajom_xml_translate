@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<localization xmlns="http://nasajon.com/schemas/localization.xsd"
+culture="en"
+moduleId="EE04F36F-BAD2-4305-CCB3-34F5B1D0C8F1">
+  <group name="LogOnView">
+    <string key="GS_LogOn_Title">Log on to Nasajon BI</string>
+    <string key="GS_LogOn_Username">Username</string>
+    <string key="GS_LogOn_Password">Password</string>
+    <string key="GS_LogOn_RememberMe">Remember me</string>
+    <string key="GS_LogOn_Button">Log In</string>
+    <group name="PasswordReset" tags="client">
+      <string key="GS_PasswordReset_Title">Reset Password</string>
+      <string key="GS_PasswordReset_Email">Email Address</string>
+      <string key="GS_PasswordReset_Send">Send Reset Link</string>
+      <string key="GS_PasswordReset_Success">Reset link sent successfully</string>
+    </group>
+  </group>
+  <group name="Dashboard">
+    <string key="GS_Dashboard_Title">Dashboard</string>
+    <string key="GS_Dashboard_Reports">Reports</string>
+    <string key="GS_Dashboard_Analytics">Analytics</string>
+    <string key="GS_Dashboard_Settings">Settings</string>
+    <string key="GS_Dashboard_Export">Export Data</string>
+    <string key="GS_Dashboard_Filter">Filter Results</string>
+  </group>
+  <group name="Common">
+    <string key="GS_Common_Save">Save</string>
+    <string key="GS_Common_Cancel">Cancel</string>
+    <string key="GS_Common_Delete">Delete</string>
+    <string key="GS_Common_Edit">Edit</string>
+    <string key="GS_Common_Add">Add</string>
+    <string key="GS_Common_Search">Search</string>
+    <string key="GS_Common_Loading">Loading...</string>
+    <string key="GS_Common_Error">An error occurred</string>
+  </group>
+</localization>
